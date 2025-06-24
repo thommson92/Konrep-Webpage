@@ -1,0 +1,30 @@
+name: Deploy konrep-webpage/dist to dev for GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Save konrep-webpage/dist
+        run: |
+          cp -r konrep-webpage/dist /tmp/dist
+
+      - name: Switch to dev branch and clear it
+        run: |
+          git checkout dev || git checkout --orphan dev
+          git
