@@ -2,15 +2,13 @@
   "homepage": "https://thommson92.github.io/Konrep-Webpage",
   "name": "konrep-webpage",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
+    "build": "vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -30,7 +28,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "gh-pages": "^6.3.0",
     "globals": "^16.2.0",
-    "typescript": "~5.8.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0"
   }
