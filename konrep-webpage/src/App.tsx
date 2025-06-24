@@ -1,35 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Box } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SavingsPlanPage from './SavingsPlanPage';
+import LektorPage from './LektorPage';
+import MainPage from './MainPage';
+import ImpressumPage from './ImpressumPage';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  
+  const [activePage, setActivePage] = useState<string>('main');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handlePageChange = (page: string) => {
+    setActivePage(page);
+  };
+
+  const isSmallScreen = window.innerWidth < 600;
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* Top-Bar */}
+      <AppBar position="fixed" sx={{ width: '100%' }}>
+        <Toolbar>
+          <Typography
+            variant="h6"
+            sx={{ flexGrow: 1, cursor: 'pointer' }}
+            onClick={() => handlePageChange('main')} // Navigate back to the main page
+          >
+            Meine Webseite
+          </Typography>
+          {isSmallScreen ? (
+            <>
+              <IconButton color="inherit" onClick={handleMenuOpen}>
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={() => handlePageChange('savingsPlans')}>Kurse</MenuItem>
+                <MenuItem onClick={() => handlePageChange('lektor')}>Lektor</MenuItem>
+                <MenuItem onClick={() => handlePageChange('impressum')}>Impressum</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Typography
+                variant="button"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handlePageChange('savingsPlans')}
+              >
+                Kurse
+              </Typography>
+              <Typography
+                variant="button"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handlePageChange('lektor')}
+              >
+                Lektor
+              </Typography>
+              <Typography
+                variant="button"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handlePageChange('impressum')}
+              >
+                Impressum
+              </Typography>
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+      {/* Content to push below the fixed AppBar */}
+      <Box sx={{ marginTop: '64px', padding: 2 }}>
+        {activePage === 'main' && <MainPage onNavigate={handlePageChange} />}
+        {activePage === 'savingsPlans' && <SavingsPlanPage />}
+        {activePage === 'lektor' && <LektorPage />}
+        {activePage === 'impressum' && <ImpressumPage />}
+      </Box>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
