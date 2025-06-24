@@ -1,4 +1,4 @@
-name: Deploy konrep-webpage/dist to dev for GitHub Pages
+name: Deploy konrep-webpage/dist to GitHub_pages for GitHub Pages
 
 on:
   push:
@@ -13,18 +13,25 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Required to access all branches
 
       - name: Set up Git config
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Save konrep-webpage/dist
+      - name: Save konrep-webpage/dist contents
         run: |
           cp -r konrep-webpage/dist /tmp/dist
 
-      - name: Switch to dev branch and clear it
+      - name: Switch to GitHub_pages branch and clean it
         run: |
-          git checkout dev || git checkout --orphan dev
-          git
+          git checkout GitHub_pages || git checkout --orphan GitHub_pages
+          git rm -rf . || true
+
+      - name: Restore dist contents
+        run: |
+          cp -r /tmp/dist/* .
+          git add .
+          git commit -m "Deploy konrep-webpage/dist from main" || echo "No changes to commit"
+          git push origin GitHub_pages --force
