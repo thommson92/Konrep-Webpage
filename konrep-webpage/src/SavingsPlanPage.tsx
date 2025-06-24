@@ -27,7 +27,7 @@ const savingsPlans = [
   },
 ];
 
-const SavingsPlanPage = () => {
+const SavingsPlanPage: React.FC = () => {
   return (
     <Box className={styles.container}>
       {savingsPlans.map((plan, index) => (
